@@ -1,10 +1,13 @@
 // Main file. It starts the server and connects the route files.
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.static('public'));            // the website pages (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));   // the website pages (works on your laptop)
+// On Vercel the folder "public" is served by Vercel itself, so the home address just opens index.html
+app.get('/', (req, res) => res.redirect('/index.html'));
 
 app.use('/api', require('./routes/users'));
 app.use('/api/complaints', require('./routes/complaints'));
